@@ -18,12 +18,9 @@ const contactSchema = new Schema({
         type: String,
         enum: ["work", "home", "personal"],
         default: 'personal',
-        required: true,
     }
-}, {
-    timestamps: true,
-});
+}, {versionKey: false, timestamps: true});
 
-const Contact = model("contact", contactSchema);
+const Contact = model("Contact", contactSchema);
 
 export default Contact;
