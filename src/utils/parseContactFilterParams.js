@@ -8,13 +8,12 @@ const parseBoolean = value => {
     return value === "true";
 }
 
-const parseContactFitlerParams = ({type, favorite})=> {
-    const parsedType = typeList.includes(type) ? type : null;
-    const parsedFavorite = parseBoolean(favorite);
-    console.log(parsedFavorite)
+const parseContactFitlerParams = ({contactType, isFavourite})=> {
+    const parsedType = typeList.includes(contactType) ? type : null;
+    const parsedFavorite = parseBoolean(isFavourite);
     return {
-        type: parsedType,
-        favorite: parsedFavorite,
+        contactType: parsedType,
+        isFavourite: parsedFavorite,
     }
 }
 

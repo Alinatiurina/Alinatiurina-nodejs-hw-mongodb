@@ -12,14 +12,14 @@ export const getContact = async ({ filter, page, perPage, sortBy = contactFieldL
         databaseQuery.where("userId").equals(filter.userId);
     }
     if (filter.type) {
-        databaseQuery.where("type").equals(filter.type);
+        databaseQuery.where("contactType").equals(filter.contactType);
     }
     if (filter.favorite) {
-        databaseQuery.where("favorite").equals(filter.favorite);
+        databaseQuery.where("isFavourite").equals(filter.isFavourite);
     }
 
-    const items = await Contact.find().skip(skip).limit(perPage).sort({ [sortBy]: sortOrder });
-    const totalItems = await Contact.countDocuments();
+    const items = await databaseQuery.skip(skip).limit(perPage).sort({ [sortBy]: sortOrder });
+    const totalItems = await Contact.find().merge(databaseQuery).countDocuments();
     const { totalPages, hasNextPage, hasPrevPage } = calcPaginationData({ total: totalItems, perPage, page });
 
     return {
