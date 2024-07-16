@@ -1,4 +1,4 @@
-import User from "../db/models/user.js";
+import User from "../db/models/User.js";
 
 import { hashValue } from "../utils/hash.js";
 
