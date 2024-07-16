@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import pino from "pino-http";
 import env from "./utils/env.js";
 import contactRouter from "./routers/contacts.js";
@@ -20,6 +21,7 @@ const setupServer = ()=> {
 
     app.use(logger);
     app.use(cors());
+    app.use(cookieParser())
     app.use(express.json());
     app.use("/auth", authRouter);
     app.use("/contacts", contactRouter);
