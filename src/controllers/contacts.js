@@ -1,4 +1,4 @@
-import { getContact, getContactById, addContact, upsertContact, deleteContact } from "../services/contact-service.js";
+import { getContacts, getContactById, addContact, upsertContact, deleteContact } from "../services/contact-service.js";
 import createHttpError from 'http-errors';
 import parsePaginationParams from "../utils/parsePaginationParams.js";
 import parseSortParams from "../utils/parseSortParams.js";
@@ -12,7 +12,7 @@ export const getAllContactsController = async (req, res) => {
     const { sortBy, sortOrder } = parseSortParams(query, contactFieldList);
     const filter = { ...parseContactFitlerParams(query), userId };
 
-    const data = await getContact({
+    const data = await getContacts({
         page,
         perPage,
         sortBy,
@@ -30,7 +30,7 @@ export const getAllContactsController = async (req, res) => {
 export const getContactByIdController = async (req, res) => {
     const { _id: userId } = req.user;
     const { id } = req.params;
-    const data = await getContact({ _id: id, userId });
+    const data = await getContactById({ _id: id, userId });;
 
     if (!data) {
         throw createHttpError(404, `Contact with id ${id} not found`);
@@ -76,9 +76,5 @@ export const deleteContactController = async (req, res) => {
     if (!result) {
         throw createHttpError(404, 'Contact not found');
     }
-    res.json({
-        status: 200,
-        message: "Successfully deleted a contact!",
-        data: result,
-    });
+    res.status(204).send();
 };

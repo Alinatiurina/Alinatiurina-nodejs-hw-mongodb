@@ -3,12 +3,12 @@ import calcPaginationData from "../utils/calcPaginationData.js";
 import { sortOrderList } from "../constants/index.js";
 import { contactFieldList } from '../constants/contacts-constants.js';
 
-export const getContact = async ({ filter, page, perPage, sortBy = contactFieldList[0], sortOrder = sortOrderList[0] }) => {
+export const getContacts = async ({ filter, page, perPage, sortBy = contactFieldList[0], sortOrder = sortOrderList[0] }) => {
     const skip = (page - 1) * perPage;
 
     const databaseQuery = Contact.find();
 
-    if (filter.userId) {
+    if(filter.userId) {
         databaseQuery.where("userId").equals(filter.userId);
     }
     if (filter.type) {
@@ -33,23 +33,25 @@ export const getContact = async ({ filter, page, perPage, sortBy = contactFieldL
     };
 };
 
-export const getContactById = id => Contact.findById(id);
+export const getContactById = filter => Contact.findOne(filter);
 
 export const addContact = data => Contact.create(data);
 
 export const upsertContact = async (filter, data, options = {}) => {
     const result = await Contact.findOneAndUpdate(filter, data, {
-        new: true,
-        upsert: true,
+        // new: true,
+        // upsert: true,
         includeResultMetadata: true,
         ...options,
     });
 
-    if (!result) return null;
-    const isNew = result.upserted ? true : false;
+      if (!result || !result.value) return null;
+
+   
+    const isNew = Boolean(result?.lastErrorObject?.upserted);
 
     return {
-        data: result,
+        data: result.value,
         isNew,
     };
 };

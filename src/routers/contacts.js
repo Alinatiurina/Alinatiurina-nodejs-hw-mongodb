@@ -11,13 +11,9 @@ const contactRouter = express.Router();
 contactRouter.use(authenticate);
 
 contactRouter.get('/', ctrlWrapper(getAllContactsController));
-    
 contactRouter.get("/:id", isValid, ctrlWrapper(getContactByIdController));
-
-contactRouter.post("/", validateBody(contactAddSchema),ctrlWrapper(addContactController));
-
+contactRouter.post("/", validateBody(contactAddSchema), ctrlWrapper(addContactController));
 contactRouter.patch("/:id", isValid, validateBody(contactUpdateSchema), ctrlWrapper(patchContactController));
- 
 contactRouter.delete("/:id", isValid, ctrlWrapper(deleteContactController));
 
 export default contactRouter;

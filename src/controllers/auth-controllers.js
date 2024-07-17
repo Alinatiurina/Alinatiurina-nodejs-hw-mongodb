@@ -15,7 +15,6 @@ const setupResponseSession = (res, {refreshToken, refreshTokenValidUntil, _id})=
     });
 }
 
-
 export const signupController = async(req, res)=> {
     const {email} = req.body;
     const user =  await findUser({email});
@@ -34,7 +33,7 @@ export const signupController = async(req, res)=> {
         status: 201,
         data,
         message: "Successfully registered a user!",
-    })
+    });
 }
 
 export const signinController = async(req, res)=> {
@@ -59,7 +58,6 @@ export const signinController = async(req, res)=> {
         data: {
             accessToken: session.accessToken,
         }
-       
     });
 }
 
