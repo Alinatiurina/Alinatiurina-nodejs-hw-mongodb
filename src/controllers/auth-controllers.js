@@ -1,7 +1,7 @@
 import createHttpError from "http-errors";
-import { findUser, signup } from "../services/auth-services.js";
+import { findUser, signup, requestResetToken, resetPassword } from "../services/auth-services.js";
 import { compareHash } from "../utils/hash.js";
-import { createSession, findSession, deleteSession} from "../services/session-service.js";
+import { createSession, findSession, deleteSession } from "../services/session-service.js";
 
 const setupResponseSession = (res, {refreshToken, refreshTokenValidUntil, _id})=> {
     res.cookie("refreshToken", refreshToken, {
@@ -100,3 +100,40 @@ export const signoutController = async(req, res)=> {
 
     res.status(204).send();
 }
+
+export const requestResetEmailController = async (req, res) => {
+
+    try {
+        const { email} = req.body;
+        const user = await findUser({ email });
+        if (!user) {
+            throw createHttpError(404, "User not found");
+        }
+
+        await requestResetToken(req.body.email);
+        res.json({
+            message: 'Reset password email has been successfully sent.',
+            status: 200,
+            data: {},
+        })
+    }
+    catch (error) {
+        throw createHttpError(500, "Failed to send the email, please try again later.");
+    }
+};
+
+export const resetPasswordController = async (req, res) => {
+    const { email } = req.body;
+    const user = await findUser({ email });
+    if (!user) {
+        throw createHttpError(404, "User not found");
+    }
+    await resetPassword(req.body);
+    await deleteSession({ _id: sessionId });
+    
+    res.json({
+        message: 'Password has been successfully reset.',
+        status: 200,
+        data: {},
+    });
+};
