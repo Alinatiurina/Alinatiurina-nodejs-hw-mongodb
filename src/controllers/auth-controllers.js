@@ -126,8 +126,6 @@ export const requestResetEmailController = async (req, res) => {
 export const resetPasswordController = async (req, res, next) => {
     console.log(req.user)
     try {
-       
-        const { _id: userId } = req.user;
         
         const { sessionId, refreshToken } = req.cookies;
 
