@@ -71,7 +71,17 @@ export const addContactController = async (req, res) => {
 export const patchContactController = async (req, res) => {
     const { id } = req.params;
     const { _id: userId } = req.user;
-    const result = await upsertContact({ _id: id ,  userId }, req.body);
+
+    let photo = "";
+    if (req.file) {
+        if (enable_cloudinary === "true") {
+            photo = await saveFileToCloudinary(req.file, "photo");
+        }
+        else {
+            photo = await saveFileToPublicDir(req.file, "photo");
+        }
+    }
+    const result = await upsertContact({ _id: id, userId }, { ...req.body, photo });
 
     if (!result) {
         throw createHttpError(404, 'Contact not found');

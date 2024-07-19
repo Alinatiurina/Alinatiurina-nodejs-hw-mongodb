@@ -39,8 +39,7 @@ export const addContact = data => Contact.create(data);
 
 export const upsertContact = async (filter, data, options = {}) => {
     const result = await Contact.findOneAndUpdate(filter, data, {
-        // new: true,
-        // upsert: true,
+
         includeResultMetadata: true,
         ...options,
     });
