@@ -25,7 +25,7 @@ authRouter.post("/send-reset-email",validateBody(requestResetEmailSchema),
 );
 
 authRouter.post(
-  "/reset-password", validateBody(resetPasswordSchema),
+  "/reset-pwd", validateBody(resetPasswordSchema),
   ctrlWrapper(resetPasswordController),
 );
 
